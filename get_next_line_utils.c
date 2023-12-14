@@ -50,7 +50,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
-		return (NULL);
+		return (ft_free(s1);
 	i = -1;
 	j = 0;
 	if (s1)
@@ -61,4 +61,10 @@ char	*ft_strjoin(char *s1, char *s2)
 	str[ft_strlen(s1) + ft_strlen(s2)] = '\0';
 	free(s1);
 	return (str);
+}
+
+char	*ft_free(char *str)
+{
+	free(str);
+	return (NULL);
 }
