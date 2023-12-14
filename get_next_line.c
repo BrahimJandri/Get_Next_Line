@@ -21,7 +21,7 @@ char	*ft_first_line(int fd, char *str)
 	if (!buf)
 		return (NULL);
 	ret = 1;
-	while (!ft_strchr(str, '\n') && ret != 0)
+	while (ret != 0 && !ft_strchr(str, '\n'))
 	{
 		ret = read(fd, buf, BUFFER_SIZE);
 		if (ret == -1)
@@ -32,6 +32,8 @@ char	*ft_first_line(int fd, char *str)
 		}
 		buf[ret] = '\0';
 		str = ft_strjoin(str, buf);
+		if(!str)
+			return (NULL);
 	}
 	free(buf);
 	return (str);
@@ -43,11 +45,11 @@ char	*ft_next_line(char *str)
 	int		i;
 
 	i = 0;
+	if(!str)
+		return (NULL);
 	while (str[i] && str[i] != '\n')
 		i++;
-	if(str[i] == '\n')
-		i++;
-	next_line = malloc(sizeof(char) * (i + 1));
+	next_line = malloc(sizeof(char) * (i + 2));
 	if (!next_line)
 		return (NULL);
 	i = 0;
@@ -71,20 +73,14 @@ char	*ft_new_str(char *str)
 	i = 0;
 	while (str[i] && str[i] != '\n')
 		i++;
-	if(str[i] == '\n')
-		i++;
 	if (!str[i])
-	{
-		free(str);
-		return (NULL);
-	}
+		return (ft_free(str));
 	new_str = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
 	if (!new_str)
-		return (NULL);
+		return (ft_free(str));
+	i++;
 	j = 0;
-	while (str[i] && str[i] != '\n')
-		new_str[j++] = str[i++];
-	if(str[i] == '\n')
+	while (str[i])
 		new_str[j++] = str[i++];
 	new_str[j] = '\0';
 	free(str);
@@ -103,8 +99,14 @@ char	*get_next_line(int fd)
 		return (NULL);
 	next_line = ft_next_line(str);
 	str = ft_new_str(str);
+	if(next_line[0] == '\0')
+	{
+		free(next_line);
+		next_line = NULL;
+	}
 	return (next_line);
 }
+
 int	main()
 {
 	int fd;
