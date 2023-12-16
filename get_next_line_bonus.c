@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bjandri <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/13 09:08:43 by bjandri           #+#    #+#             */
-/*   Updated: 2023/12/13 09:08:45 by bjandri          ###   ########.fr       */
+/*   Created: 2023/12/16 11:08:45 by bjandri           #+#    #+#             */
+/*   Updated: 2023/12/16 11:08:49 by bjandri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*ft_first_line(int fd, char *str)
 {
@@ -87,18 +87,18 @@ char	*ft_new_str(char *str)
 	return (new_str);
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line_bonus(int fd)
 {
-	static char	*str;
+	static char	*buffer[1024];
 	char		*next_line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 1024)
 		return (NULL);
-	str = ft_first_line(fd, str);
-	if (!str)
+	buffer[fd] = ft_first_line(fd, buffer[fd]);
+	if (!buffer[fd])
 		return (NULL);
-	next_line = ft_next_line(str);
-	str = ft_new_str(str);
+	next_line = ft_next_line(buffer[fd]);
+	buffer[fd] = ft_new_str(buffer[fd]);
 	if (next_line[0] == '\0')
 	{
 		free(next_line);
@@ -109,50 +109,24 @@ char	*get_next_line(int fd)
 
 // int	main(void)
 // {
-// 	int fd;
-// 	char *line;
+// 	int		fd1;
+// 	int		fd2;
+// 	int		fd3;
+// 	char	*line1;
+// 	char	*line2;
+// 	char	*line3;
 
-// 	fd = open("get_next_line.c", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-
-// 	//fd = open("get_next_line.c", O_RDONLY);
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
-// 	line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);line = get_next_line(fd);
-// 	printf("%s", line);
-// 	free(line);
+// 	fd1 = open("baha", O_RDONLY);
+// 	fd2 = open("braha", O_RDONLY);
+// 	fd3 = open("bihi", O_RDONLY);
+// 	line1 = get_next_line_bonus(fd1);
+// 	line2 = get_next_line_bonus(fd2);
+// 	line3 = get_next_line_bonus(fd3);
+// 	printf("%s\n", line1);
+// 	printf("%s\n", line2);
+// 	printf("%s", line3);
+// 	free(line1);
+// 	free(line2);
+// 	free(line3);
+// 	return (0);
 // }
